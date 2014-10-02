@@ -1,0 +1,44 @@
+<html>
+        <head>
+                <title>Syc Chatroom Demo</title>
+                <script src="/socket.io/socket.io.js"></script>
+                <script src="syc.js"></script>
+        </head>
+        <body>
+
+                <h2>Syc Chatroom Demo</h2>
+                <div id="messages"></div>
+                <div id="publish">
+                        <input type="text" id="screenname" />
+                        <input type="text" id="content" />
+                        <input type="submit" value="Send" onclick="submit()" />
+                </div>
+
+                <script>
+                        var socket = io.connect();
+                        Syc.connect(socket);
+
+                        setTimeout(function () {
+                                Syc.list('messages').forEach(function (message) {
+                                       addMessage(message);
+                               });
+                        }, 1000);
+
+                        Syc.watch('messages', function (change) { addMessage(change.variable[change.property]); });
+
+                        function addMessage (message) {
+                                var div = document.getElementById('messages');
+
+                                div.innerHTML = div.innerHTML + '<div class="screenname">' +  message.screenname + '</div><div class="content">' + message.content + '</div>';
+                        };
+
+                        function submit () {
+                                var message = {screenname: document.getElementById('screenname').value, content: document.getElementById('content').value};
+                                Syc.list('messages').push(message);
+                                addMessage(message);
+                        }
+
+                </script>
+
+        </body>
+</html>
