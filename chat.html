@@ -16,29 +16,27 @@
 
                 <script>
                         var socket = io.connect();
-                        Syc.connect(socket);
-
-                        setTimeout(function () {
+                        Syc.connect(socket, function () {
+                                console.log('wut wut wut wut');
                                 Syc.list('messages').forEach(function (message) {
-                                       addMessage(message);
+                                        addMessage(message);
+                                });
+
+                                Syc.watch(Syc.list('messages'), function (change) { 
+                                        addMessage(change.change);
                                });
-                        }, 1000);
+                       });
 
-                        Syc.watch('messages', function (change) { addMessage(change.variable[change.property]); });
+                       function submit () {
+                                var message = {screenname: document.getElementById('screenname').value, content: document.getElementById('content').value};
+                                Syc.list('messages').push(message);
+                       }
 
-                        function addMessage (message) {
+                       function addMessage (message) {
                                 var div = document.getElementById('messages');
 
                                 div.innerHTML = div.innerHTML + '<div class="screenname">' +  message.screenname + '</div><div class="content">' + message.content + '</div>';
-                        };
-
-                        function submit () {
-                                var message = {screenname: document.getElementById('screenname').value, content: document.getElementById('content').value};
-                                Syc.list('messages').push(message);
-                                addMessage(message);
-                        }
-
+                       };
                 </script>
-
         </body>
 </html>
