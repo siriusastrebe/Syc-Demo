@@ -14,16 +14,19 @@ syc.verify(syc.list('messages'), function (changes, socket) {
   var change = changes.change,
       properties = getProperties(change);
 
-  // Ensure it's an 1) object that 2) has two properties 3) called 'content' & 'screenname' 4) which are strings.
+  // Ensure it's an 1) object that
   if (typeof change !== 'object') {
     return false;
   }
+  // 2) has two properties
   if (properties.length !== 2) {
     return false;
   }
+  // 3) called 'content' & 'screenname' 
   if (!change.content || !change.screenname) {
     return false;
   }
+  // 4) which are strings.
   if (typeof change.content !== 'string' && typeof change.screenname !== 'string') {
     return false;
   }
