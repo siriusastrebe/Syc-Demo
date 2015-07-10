@@ -17,14 +17,15 @@
                 <script>
                         var socket = io.connect();
                         Syc.connect(socket, function () {
-                                console.log('wut wut wut wut');
+                                // Display all messages when they're received.
                                 Syc.list('messages').forEach(function (message) {
                                         addMessage(message);
                                 });
 
+                                // Whenever a new message is added to the array, 
                                 Syc.watch(Syc.list('messages'), function (change) { 
                                         addMessage(change.change);
-                               });
+                                });
                        });
 
                        function submit () {
