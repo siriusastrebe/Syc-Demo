@@ -1,20 +1,20 @@
 var express = require('express');
 var app = express();
 var syc = require('syc');
-
 var server = app.listen(3000, function() {
   console.log('Listening on port %d', server.address().port);
 });
-
 var io = require('socket.io')(server);
 
-// Syc logic - Creating an array of messages to by synchronized
+// Syc logic - Creating an array of messages which Syc will synchronize.
 var messages = syc.sync('messages', []);
 
+// Verification. Santizing all incoming messages
 syc.verify(syc.list('messages'), function (changes, socket) { 
   var change = changes.change,
       properties = getProperties(change);
 
+  // Ensure it's an 1) object that 2) has two properties 3) called 'content' & 'screenname' 4) which are strings.
   if (typeof change !== 'object') {
     return false;
   }
