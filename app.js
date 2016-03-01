@@ -12,7 +12,7 @@ var io = require('socket.io')(server);
 var messages = syc.sync('messages', []);
 
 syc.verify(syc.list('messages'), function (changes, socket) { 
-  var change = changes.change,
+  var change = changes.newValue,
       properties = getProperties(change);
 
   if (typeof change !== 'object') {

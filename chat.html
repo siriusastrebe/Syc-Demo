@@ -3,27 +3,37 @@
                 <title>Syc Chatroom Demo</title>
                 <script src="/socket.io/socket.io.js"></script>
                 <script src="syc.js"></script>
+
+                <style type="text/css">
+                  #messages { height: 250px; border: 2px inset #888; margin-bottom: 40px; overflow: auto; }
+                  #publish div { display: inline-block; }
+                  .screenname { display: inline-block; margin-top: 10px; margin-right: 10px; }
+                  .content { display: inline-block; }
+                </style>
         </head>
         <body>
 
                 <h2>Syc Chatroom Demo</h2>
                 <div id="messages"></div>
                 <div id="publish">
+                        <div>Username:</div>
                         <input type="text" id="screenname" />
+                        <div>Message:</div>
                         <input type="text" id="content" />
                         <input type="submit" value="Send" onclick="submit()" />
                 </div>
 
                 <script>
                         var socket = io.connect();
-                        Syc.connect(socket, function () {
-                                console.log('wut wut wut wut');
+                        Syc.connect(socket);
+
+                        Syc.loaded(function () {
                                 Syc.list('messages').forEach(function (message) {
                                         addMessage(message);
                                 });
 
                                 Syc.watch(Syc.list('messages'), function (change) { 
-                                        addMessage(change.change);
+                                        addMessage(change.newValue);
                                });
                        });
 
@@ -35,7 +45,7 @@
                        function addMessage (message) {
                                 var div = document.getElementById('messages');
 
-                                div.innerHTML = div.innerHTML + '<div class="screenname">' +  message.screenname + '</div><div class="content">' + message.content + '</div>';
+                                div.innerHTML = div.innerHTML + '<div class="message"><div class="screenname">' +  message.screenname + '</div><div class="content">' + message.content + '</div></div>';
                        };
                 </script>
         </body>
