@@ -32,6 +32,7 @@
                                         addMessage(message);
                                 });
 
+                                // Whenever a new message is added to the array, 
                                 Syc.watch(Syc.list('messages'), function (change) { 
                                         addMessage(change.newValue);
                                });
